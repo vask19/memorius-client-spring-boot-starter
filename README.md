@@ -1,0 +1,1 @@
+# memorius-client-spring-boot-starter
