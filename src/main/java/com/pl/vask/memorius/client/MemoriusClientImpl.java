@@ -71,4 +71,44 @@ public class MemoriusClientImpl implements MemoriusClient {
             throw new RuntimeException("PURGE failed", e);
         }
     }
+
+    @Override
+    public int appendToList(String key, String value) {
+        try {
+            Object response = sendCommand("APPEND", key, value);
+            return Integer.parseInt(response.toString());
+        } catch (IOException e) {
+            throw new RuntimeException("APPEND failed", e);
+        }
+    }
+
+    @Override
+    public int countList(String key) {
+        try {
+            Object response = sendCommand("COUNT", key);
+            return Integer.parseInt(response.toString());
+        } catch (IOException e) {
+            throw new RuntimeException("COUNT failed", e);
+        }
+    }
+
+    @Override
+    public String summon(String key) {
+        try {
+            Object response = sendCommand("SUMMON", key);
+            return response != null ? response.toString() : null;
+        } catch (IOException e) {
+            throw new RuntimeException("SUMMON failed", e);
+        }
+    }
+
+    @Override
+    public String expiate(String key, long seconds) {
+        try {
+            Object response = sendCommand("EXPIATE", key, seconds);
+            return response != null ? response.toString() : null;
+        } catch (IOException e) {
+            throw new RuntimeException("EXPIATE failed", e);
+        }
+    }
 }
