@@ -134,4 +134,15 @@ public class MemoriusClientImpl implements MemoriusClient {
         }
     }
 
+    @Override
+    public int banishFromList(String key, String value) {
+        try {
+            Object response = sendCommand("BANISH", key, value);
+            return Integer.parseInt(response.toString());
+        } catch (IOException e) {
+            throw new RuntimeException("BANISH failed", e);
+        }
+    }
+
+
 }

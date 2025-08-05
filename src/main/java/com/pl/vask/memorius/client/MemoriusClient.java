@@ -12,4 +12,6 @@ public interface MemoriusClient {
     String summon(String key);
     String expiate(String key, long seconds);
     List<String> invoke(String key);
+
+    int banishFromList(String key, String value);
 }
