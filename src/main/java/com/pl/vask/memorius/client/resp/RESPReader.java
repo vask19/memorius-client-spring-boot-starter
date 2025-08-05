@@ -2,6 +2,8 @@ package com.pl.vask.memorius.client.resp;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RESPReader {
     private final BufferedInputStream input;
@@ -26,7 +28,7 @@ public class RESPReader {
             case '$':
                 return readBulkString();
             case '*':
-                return readArray();
+                return readArrayAsList();
             default:
                 throw new IOException("Unknown RESP type: " + (char) prefix);
         }
@@ -76,14 +78,14 @@ public class RESPReader {
         return new String(buffer, StandardCharsets.UTF_8);
     }
 
-    private Object[] readArray() throws IOException {
+    private List<Object> readArrayAsList() throws IOException {
         int length = (int) readInteger();
         if (length == -1) {
             return null;
         }
-        Object[] result = new Object[length];
+        List<Object> result = new ArrayList<>(length);
         for (int i = 0; i < length; i++) {
-            result[i] = read();
+            result.add(read());
         }
         return result;
     }
