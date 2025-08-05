@@ -5,6 +5,9 @@ import com.pl.vask.memorius.client.resp.RESPWriter;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class MemoriusClientImpl implements MemoriusClient {
 
@@ -111,4 +114,24 @@ public class MemoriusClientImpl implements MemoriusClient {
             throw new RuntimeException("EXPIATE failed", e);
         }
     }
+
+    @Override
+    public List<String> invoke(String key) {
+        try {
+            Object response = sendCommand("INVOKE", key);
+
+            if (response instanceof List<?> rawList) {
+                List<String> result = new ArrayList<>();
+
+                for (Object item : rawList) {
+                    result.add(item != null ? item.toString() : null);
+                }
+                return result;
+            }
+            return Collections.emptyList();
+        } catch (IOException e) {
+            throw new RuntimeException("INVOKE failed", e);
+        }
+    }
+
 }
